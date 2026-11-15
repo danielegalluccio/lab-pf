@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Mobile Frameworks Lab — The Future of Mobile</title>
+  <meta name="description" content="An executive journey into the Mobile Frameworks Lab.">
+  <meta name="theme-color" content="#05060f">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Sora:wght@200;300;400;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="intro">
+
+  <!-- Fixed chrome -->
+  <header class="brand" aria-label="Mobile Frameworks Lab">
+    <span class="brand-mark" aria-hidden="true"></span>
+    <span class="brand-txt">Mobile Frameworks <b>Lab</b></span>
+  </header>
+
+  <nav class="chapters" aria-label="Story chapters">
+    <ol>
+      <li data-ch="0"><span>The Pocket Advantage</span><i></i></li>
+      <li data-ch="1"><span>The Enabling Capability</span><i></i></li>
+      <li data-ch="2"><span>Step inside for a closer look</span><i></i></li>
+      <li data-ch="3"><span>The Pillars</span><i></i></li>
+    </ol>
+  </nav>
+
+  <!-- Scroll runway: the whole film is scrubbed against this -->
+  <div id="scroll-space" aria-hidden="true"></div>
+
+  <main id="viewport">
+    <div id="bg1" aria-hidden="true"><i></i><i></i><i></i></div>
+
+    <!-- SCENE 4: the plaza with the three towers -->
+    <section id="plaza" aria-label="The three pillars of the Mobile Frameworks Lab">
+      <div class="pl" id="pl-sky"></div>
+      <div class="pl" id="pl-far">
+        <div class="mx" data-d="6"></div>
+      </div>
+      <div class="pl" id="pl-trails"></div>
+      <div class="pl" id="pl-mid">
+        <div class="mx" data-d="12"></div>
+      </div>
+      <div class="pl" id="pl-glow"></div>
+      <div class="pl" id="pl-floor"></div>
+      <div class="pl" id="pl-towers">
+        <div class="mx" data-d="20">
+          <div class="towers" id="towers"></div>
+        </div>
+      </div>
+      <div class="pl" id="pl-fog"></div>
+      <div class="vignette"></div>
+    </section>
+
+    <!-- SCENES 2 + 3: the gate (stage is injected by JS) -->
+    <section id="world" aria-hidden="true"></section>
+
+    <!-- SCENE 1: hand + phone -->
+    <div id="holder" aria-hidden="true">
+      <div id="floater">
+        <svg class="hand hand-back hand-part" viewBox="0 0 500 800" aria-hidden="true">
+          <defs>
+            <linearGradient id="skinF" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0" stop-color="#e49b78" />
+              <stop offset=".32" stop-color="#ffd9bf" />
+              <stop offset=".7" stop-color="#f3b392" />
+              <stop offset="1" stop-color="#d7855f" />
+            </linearGradient>
+            <linearGradient id="skinP" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stop-color="#ffdcc4" />
+              <stop offset=".5" stop-color="#f4b695" />
+              <stop offset="1" stop-color="#d98c68" />
+            </linearGradient>
+            <radialGradient id="palmGlow" cx=".5" cy=".4" r=".6">
+              <stop offset="0" stop-color="#fff" stop-opacity=".45" />
+              <stop offset="1" stop-color="#fff" stop-opacity="0" />
+            </radialGradient>
+          </defs>
+          <g class="hand-body">
+            <g id="th-b" class="thumb" data-ox="372" data-oy="585">
+              <rect x="336" y="380" width="72" height="210" rx="36" fill="url(#skinF)" />
+            </g>
+            <g class="fb f0" data-ox="132" data-oy="420">
+              <rect x="104" y="270" width="56" height="150" rx="28" fill="url(#skinF)" />
+            </g>
+            <g class="fb f1" data-ox="193" data-oy="420">
+              <rect x="162" y="230" width="62" height="190" rx="31" fill="url(#skinF)" />
+            </g>
+            <g class="fb f2" data-ox="259" data-oy="420">
+              <rect x="226" y="215" width="66" height="205" rx="33" fill="url(#skinF)" />
+            </g>
+            <g class="fb f3" data-ox="327" data-oy="420">
+              <rect x="294" y="235" width="66" height="185" rx="33" fill="url(#skinF)" />
+            </g>
+            <path
+              d="M104 405 H372 C396 405 404 470 392 535 C382 590 352 636 330 664 L326 800 H168 L164 664 C140 640 110 590 102 530 C96 480 98 430 104 405 Z"
+              fill="url(#skinP)" />
+            <ellipse cx="372" cy="565" rx="44" ry="76" fill="url(#skinP)" />
+            <ellipse cx="250" cy="520" rx="120" ry="100" fill="url(#palmGlow)" />
+            <path d="M150 520 C200 548 262 550 332 518" fill="none" stroke="#b86a49" stroke-opacity=".28"
+              stroke-width="3" stroke-linecap="round" />
+            <path d="M160 470 C215 492 270 488 340 462" fill="none" stroke="#b86a49" stroke-opacity=".2"
+              stroke-width="3" stroke-linecap="round" />
+          </g>
+        </svg>
+
+        <div id="phone-drop">
+          <div id="phone" class="phone">
+            <div class="screen">
+              <div class="home-ui">
+                <div class="statusbar"><span>9:41</span><span class="sb-r"><i></i><i></i><i class="batt"></i></span>
+                </div>
+                <div class="clock"><small>Sunday, 15 November</small><b>9:41</b></div>
+                <div class="icons" id="icons"></div>
+                <div class="dock"><i></i><i></i><i></i><i></i></div>
+              </div>
+              <div id="phoneStage" class="phone-stage"></div>
+              <div class="screen-off"></div>
+              <div class="island"></div>
+              <div class="glare"></div>
+            </div>
+          </div>
+        </div>
+
+        <svg class="hand hand-front hand-part" viewBox="0 0 500 800" aria-hidden="true">
+          <g id="th-f" class="thumb-f" data-ox="372" data-oy="585">
+            <rect x="336" y="380" width="72" height="210" rx="36" fill="url(#skinF)" />
+          </g>
+          <g class="ff f0" data-ox="132" data-oy="420">
+            <rect x="104" y="270" width="56" height="150" rx="28" fill="url(#skinF)" />
+          </g>
+          <g class="ff f1" data-ox="193" data-oy="420">
+            <rect x="162" y="230" width="62" height="190" rx="31" fill="url(#skinF)" />
+          </g>
+          <g class="ff f2" data-ox="259" data-oy="420">
+            <rect x="226" y="215" width="66" height="205" rx="33" fill="url(#skinF)" />
+          </g>
+          <g class="ff f3" data-ox="327" data-oy="420">
+            <rect x="294" y="235" width="66" height="205" rx="33" fill="url(#skinF)" />
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <canvas id="sparks" aria-hidden="true"></canvas>
+
+    <!-- Storytelling -->
+    <div id="captions">
+      <div class="scrim" id="scrim"></div>
+      <article class="cap c1" id="cap1">
+        <p class="eyebrow">Chapter 01 · The Pocket Advantage</p>
+        <h2>The most important computer in our business <br/><em>fits in one hand.</em></h2>
+        <p class="sub">A piece of Lloyds Banking Group sits in 28 millions pockets.</p>
+      </article>
+      <article class="cap c2" id="cap2">
+        <p class="eyebrow">Chapter 02 · The Enabling Capability</p>
+        <h2>The <em>Mobile Frameworks Lab</em> provides the platform engineering capabilities for our mobile apps.</h2>
+        <p class="sub">Frameworks, reusable components, tooling, security and delivery to customers.
+        </p>
+      </article>
+      <article class="cap c3" id="cap3">
+        <p class="eyebrow">Chapter 03 · Step inside for a closer look</p>
+        <h2>Here is where we shape, <em>the future of mobile</em>.</h2>
+        <p class="sub">Keep scrolling. We are taking you through.</p>
+      </article>
+      <article class="cap c4" id="cap4">
+        <p class="eyebrow">Chapter 04 · The Pillars</p>
+        <h2>Three Areas. One lab. <br/><em>Endless possibilities</em>.</h2>
+        <p class="sub">Select a tower to step inside.</p>
+      </article>
+    </div>
+
+    <div class="hint" id="hint"><span>Scroll to step inside</span><i></i></div>
+    <button class="replay" id="replay" type="button">↑ Replay the journey</button>
+  </main>
+
+  <dialog id="pillar" aria-labelledby="pl-title">
+    <form method="dialog" class="pd-close"><button aria-label="Close">✕</button></form>
+    <div class="pd-body">
+      <p class="pd-num" id="pl-num"></p>
+      <h3 id="pl-title"></h3>
+      <p class="pd-lead" id="pl-lead"></p>
+      <ul id="pl-list"></ul>
+      <div class="pd-tags" id="pl-tags"></div>
+      <form method="dialog"><button class="pd-cta">Back to the skyline</button></form>
+    </div>
+  </dialog>
+
+  <script src="lib/gsap.min.js"></script>
+  <script src="lib/ScrollTrigger.min.js"></script>
+  <script src="main.js"></script>
+</body>
+
+</html>
