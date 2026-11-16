@@ -62,92 +62,13 @@
     <!-- SCENES 2 + 3: the gate (stage is injected by JS) -->
     <section id="world" aria-hidden="true"></section>
 
-    <!-- SCENE 1: hand + phone -->
-    <div id="holder" aria-hidden="true">
-      <div id="floater">
-        <svg class="hand hand-back hand-part" viewBox="0 0 500 800" aria-hidden="true">
-          <defs>
-            <linearGradient id="skinF" x1="0" x2="1" y1="0" y2="0">
-              <stop offset="0" stop-color="#e49b78" />
-              <stop offset=".32" stop-color="#ffd9bf" />
-              <stop offset=".7" stop-color="#f3b392" />
-              <stop offset="1" stop-color="#d7855f" />
-            </linearGradient>
-            <linearGradient id="skinP" x1="0" x2="1" y1="0" y2="1">
-              <stop offset="0" stop-color="#ffdcc4" />
-              <stop offset=".5" stop-color="#f4b695" />
-              <stop offset="1" stop-color="#d98c68" />
-            </linearGradient>
-            <radialGradient id="palmGlow" cx=".5" cy=".4" r=".6">
-              <stop offset="0" stop-color="#fff" stop-opacity=".45" />
-              <stop offset="1" stop-color="#fff" stop-opacity="0" />
-            </radialGradient>
-          </defs>
-          <g class="hand-body">
-            <g id="th-b" class="thumb" data-ox="372" data-oy="585">
-              <rect x="336" y="380" width="72" height="210" rx="36" fill="url(#skinF)" />
-            </g>
-            <g class="fb f0" data-ox="132" data-oy="420">
-              <rect x="104" y="270" width="56" height="150" rx="28" fill="url(#skinF)" />
-            </g>
-            <g class="fb f1" data-ox="193" data-oy="420">
-              <rect x="162" y="230" width="62" height="190" rx="31" fill="url(#skinF)" />
-            </g>
-            <g class="fb f2" data-ox="259" data-oy="420">
-              <rect x="226" y="215" width="66" height="205" rx="33" fill="url(#skinF)" />
-            </g>
-            <g class="fb f3" data-ox="327" data-oy="420">
-              <rect x="294" y="235" width="66" height="185" rx="33" fill="url(#skinF)" />
-            </g>
-            <path
-              d="M104 405 H372 C396 405 404 470 392 535 C382 590 352 636 330 664 L326 800 H168 L164 664 C140 640 110 590 102 530 C96 480 98 430 104 405 Z"
-              fill="url(#skinP)" />
-            <ellipse cx="372" cy="565" rx="44" ry="76" fill="url(#skinP)" />
-            <ellipse cx="250" cy="520" rx="120" ry="100" fill="url(#palmGlow)" />
-            <path d="M150 520 C200 548 262 550 332 518" fill="none" stroke="#b86a49" stroke-opacity=".28"
-              stroke-width="3" stroke-linecap="round" />
-            <path d="M160 470 C215 492 270 488 340 462" fill="none" stroke="#b86a49" stroke-opacity=".2"
-              stroke-width="3" stroke-linecap="round" />
-          </g>
-        </svg>
-
-        <div id="phone-drop">
-          <div id="phone" class="phone">
-            <div class="screen">
-              <div class="home-ui">
-                <div class="statusbar"><span>9:41</span><span class="sb-r"><i></i><i></i><i class="batt"></i></span>
-                </div>
-                <div class="clock"><small>Sunday, 15 November</small><b>9:41</b></div>
-                <div class="icons" id="icons"></div>
-                <div class="dock"><i></i><i></i><i></i><i></i></div>
-              </div>
-              <div id="phoneStage" class="phone-stage"></div>
-              <div class="screen-off"></div>
-              <div class="island"></div>
-              <div class="glare"></div>
-            </div>
-          </div>
-        </div>
-
-        <svg class="hand hand-front hand-part" viewBox="0 0 500 800" aria-hidden="true">
-          <g id="th-f" class="thumb-f" data-ox="372" data-oy="585">
-            <rect x="336" y="380" width="72" height="210" rx="36" fill="url(#skinF)" />
-          </g>
-          <g class="ff f0" data-ox="132" data-oy="420">
-            <rect x="104" y="270" width="56" height="150" rx="28" fill="url(#skinF)" />
-          </g>
-          <g class="ff f1" data-ox="193" data-oy="420">
-            <rect x="162" y="230" width="62" height="190" rx="31" fill="url(#skinF)" />
-          </g>
-          <g class="ff f2" data-ox="259" data-oy="420">
-            <rect x="226" y="215" width="66" height="205" rx="33" fill="url(#skinF)" />
-          </g>
-          <g class="ff f3" data-ox="327" data-oy="420">
-            <rect x="294" y="235" width="66" height="205" rx="33" fill="url(#skinF)" />
-          </g>
-        </svg>
+    <!-- SCENE 1: video of hand catching phone -->
+    <section id="intro-scene" aria-hidden="true">
+      <div id="video-wrap">
+        <video id="intro-video" src="phone_catch.mp4" poster="phone_catch_end.jpg" muted playsinline preload="auto"></video>
+        <div id="video-glare"></div>
       </div>
-    </div>
+    </section>
 
     <canvas id="sparks" aria-hidden="true"></canvas>
 

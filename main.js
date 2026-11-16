@@ -138,8 +138,6 @@ const worldEl = $('#world');
 const worldStage = document.createElement('div');
 worldStage.className = 'stage'; worldStage.innerHTML = stageHTML('w');
 worldEl.appendChild(worldStage);
-const phoneStage = $('#phoneStage');
-phoneStage.classList.add('stage'); phoneStage.innerHTML = stageHTML('p');
 
 const W = {
   stage: worldStage,
@@ -153,14 +151,6 @@ if (params.has('debug')){
   const st = document.createElement('style');
   st.textContent = `.door-l{outline:0;background-color:rgba(255,0,0,.35);background-blend-mode:multiply}.door-r{background-color:rgba(0,255,0,.35);background-blend-mode:multiply}.lyr-sky{background-color:rgba(0,0,255,.35);background-blend-mode:multiply}`;
   document.head.appendChild(st);
-}
-
-/* ------------------------------------------------------------------ *
- *  Phone home screen icons
- * ------------------------------------------------------------------ */
-{
-  const g = ['#7cf,#a6f','#fa7,#f68','#7f9,#3bc','#ff7,#fb4','#f9c,#c7f','#9cf,#58f','#fc8,#f77','#8fd,#4c9'];
-  $('#icons').innerHTML = Array.from({length:12},(_,i)=> i===5 ? '<i class="lab"></i>' : `<i style="background:linear-gradient(135deg,${g[i%g.length]})"></i>`).join('');
 }
 
 /* ------------------------------------------------------------------ *
@@ -270,7 +260,6 @@ function applyLayout(){
   kPhone = land ? SH / IMG_W : SW / 560;                                  // stage scale inside the phone
   kEnd  = kPhone * sEnd;                                                  // same stage scale at full screen
   kBase = land ? Math.max(VW / IMG_W, VH / IMG_H) * 1.03 : kEnd;          // settled scale of the gate
-  gsap.set(phoneStage, { xPercent:-50, yPercent:-50, rotation: land ? 90 : 0, scale: kPhone });
 }
 applyLayout();
 gsap.set(worldStage, { xPercent:-50, yPercent:-50 });
@@ -313,8 +302,8 @@ gsap.ticker.add((time) => {
   }
   // trickle around the phone while it rests in the hand
   if (cv.dataset.trickle === '1' && Math.random() < .35){
-    const r = $('#phone').getBoundingClientRect(); const a = Math.random()*6.28;
-    burst(r.left + r.width/2 + Math.cos(a)*r.width*.7, r.top + r.height/2 + Math.sin(a)*r.height*.55, 1, .5);
+    const a = Math.random()*6.28;
+    burst(VW*.52 + Math.cos(a)*VH*.14, VH*.49 + Math.sin(a)*VH*.22, 1, .5);
   }
   cx.globalCompositeOperation = 'lighter';
   for (let i = sparks.length - 1; i >= 0; i--){
@@ -329,7 +318,7 @@ gsap.ticker.add((time) => {
 /* ------------------------------------------------------------------ *
  *  Master scroll timeline
  * ------------------------------------------------------------------ */
-const holder = $('#holder'), phone = $('#phone');
+const introScene = $('#intro-scene'), videoWrap = $('#video-wrap'), introVideo = $('#intro-video');
 gsap.set('#world', { autoAlpha: 0 });
 gsap.set('#plaza', { autoAlpha: 0 });
 
@@ -342,21 +331,18 @@ const tl = gsap.timeline({
   }
 });
 
-/* ---- Scene 1 : zoom into the screen ---- */
-tl.fromTo(holder, { scale: () => ps }, { scale: () => sEnd, ease: 'power2.inOut', duration: 22 }, 0)
-  .to(phone,  { rotation: () => land ? -90 : 0, ease: 'power2.inOut', duration: 18 }, 3)
-  .to('.hand-part', { autoAlpha: 0, duration: 5, ease: 'power1.in' }, 0)
-  .to('#cap1', { autoAlpha: 0, y: -30, duration: 4, ease: 'power1.in' }, 0.5)
-  .to('#bg1', { opacity: 0, duration: 9 }, 12)
-  .to('.home-ui', { opacity: 0, scale: 1.25, duration: 5, ease: 'power1.in' }, 8.5)
-  .fromTo(phoneStage, { opacity: 0 }, { opacity: 1, duration: 7, ease: 'power1.inOut' }, 13)
-  .to('.glare', { opacity: 0, duration: 6 }, 10)
-  .set(holder, { autoAlpha: 0 }, 22)
-  .set('#world', { autoAlpha: 1 }, 22);
+/* ---- Scene 1 : zoom into the phone screen & smoothly reveal the gate ---- */
+tl.fromTo('#cap1', { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: -30, duration: 4.5, ease: 'power1.in', immediateRender: false }, 0.5)
+  .fromTo(videoWrap, { scale: 1, rotation: 0 }, { scale: () => land ? 12 : 9, rotation: 0, ease: 'power2.inOut', duration: 22 }, 0)
+  .to('#video-glare', { opacity: .88, duration: 9, ease: 'power2.in' }, 8)
+  .to('#video-glare', { opacity: 0, duration: 6, ease: 'power1.out' }, 17)
+  .to(introScene, { autoAlpha: 0, duration: 9, ease: 'power2.inOut' }, 13)
+  .to('#bg1', { opacity: 0, duration: 9, ease: 'power1.inOut' }, 13)
+  .fromTo('#world', { autoAlpha: 0 }, { autoAlpha: 1, duration: 9, ease: 'power2.inOut' }, 12)
+  .fromTo(W.stage, { scale: () => kBase * 0.78, rotation: 0 }, { scale: () => kBase, rotation: 0, ease: 'power2.out', duration: 19 }, 12);
 
 /* ---- Scene 2 : portal parallax ---- */
-tl.fromTo(W.stage, { scale: () => kEnd }, { scale: () => kBase, ease: 'power2.out', duration: 9 }, 22)
-  .fromTo(W.near, { scale: 1 }, { scale: 1.1, duration: 28 }, 22)
+tl.fromTo(W.near, { scale: 1 }, { scale: 1.1, duration: 28 }, 22)
   .fromTo(W.city, { scale: 1 }, { scale: 1.04, duration: 28 }, 22);
 
 /* ---- Scene 3 : gates open, push through ---- */
@@ -402,15 +388,15 @@ tl.to({}, { duration: .01 }, 99.99);    // total length = 100
  *  Progress-driven UI state
  * ------------------------------------------------------------------ */
 const chapterEls = $$('.chapters li');
-let chap = -1, idle = null, idleOff = false;
+let chap = -1, idleOff = false;
 function onProgress(t){
   const c = t < 22 ? 0 : t < 42 ? 1 : t < 80 ? 2 : 3;
   if (c !== chap){ chap = c; chapterEls.forEach((el,i) => el.classList.toggle('on', i === c)); }
   document.body.classList.toggle('dark', t > 12);
   document.body.classList.toggle('live', t > 92);
   sparkOn = !reduced && t < 14;
-  if (t > .3 && !idleOff && idle){ idleOff = true; idle.pause(); gsap.to('#floater', { y: 0, rotation: 0, duration: .5, overwrite: 'auto' }); cv.dataset.trickle = '0'; }
-  else if (t <= .3 && idleOff && idle){ idleOff = false; idle.resume(); cv.dataset.trickle = '1'; }
+  if (t > .3 && !idleOff){ idleOff = true; cv.dataset.trickle = '0'; }
+  else if (t <= .3 && idleOff){ idleOff = false; cv.dataset.trickle = '1'; }
   gsap.to('#hint', { opacity: t < .5 && !document.body.classList.contains('intro') ? 1 : 0, duration: .4, overwrite: 'auto' });
 }
 
@@ -428,76 +414,106 @@ if (!coarse && !reduced){
 }
 
 /* ------------------------------------------------------------------ *
- *  Intro: the hand opens, the phone drops, sparkles
+ *  Intro: play phone_catch.mp4, show caption & unlock scroll
  * ------------------------------------------------------------------ */
-const og = (_, el) => `${el.dataset.ox} ${el.dataset.oy}`;
-const OPEN  = [-15, -6, 3, 13], CLOSED = [9, 4, -2, -7], CURL = [11, 5, -2, -9];
-
-gsap.set('.fb, .ff, .thumb, .thumb-f', { svgOrigin: og });
-gsap.set('.fb',      { scaleY: .42, rotation: i => CLOSED[i] });
-gsap.set('#th-b',    { scaleY: .5, rotation: 4 });
-gsap.set('.ff, #th-f', { opacity: 0 });
-gsap.set('#floater', { opacity: 0, y: 90 });
-
-function dropFrom(){ return -((VH / 2 + 330 * ps) / ps) - 60; }
-gsap.set('#phone-drop', { y: dropFrom, rotation: -16, transformOrigin: '50% 50%' });
 gsap.set('#cap1', { autoAlpha: 0, y: 30 });
 
-function startIdle(){
-  if (reduced) return;
-  idle = gsap.timeline({ repeat: -1, yoyo: true, defaults: { ease: 'sine.inOut' } })
-    .to('#floater', { y: -12, rotation: 1.2, duration: 3 });
-  cv.dataset.trickle = '1';
+function seekToEnd(){
+  try {
+    introVideo.pause();
+    if (introVideo.duration && !params.has('p')) introVideo.currentTime = Math.max(0, introVideo.duration - 0.15);
+    else { introVideo.removeAttribute('src'); introVideo.load(); }
+  } catch (_) {}
 }
 
-function phoneCenter(){ const r = phone.getBoundingClientRect(); return [r.left + r.width/2, r.top + r.height/2]; }
+function finishIntro(skipVideo){
+  if (skipVideo) seekToEnd();
+  document.body.classList.remove('intro');
+  ScrollTrigger.refresh();
+  if (!reduced) cv.dataset.trickle = '1';
+  if (tl.time() < 0.5) gsap.to('#cap1', { autoAlpha: 1, y: 0, duration: skipVideo ? 0.01 : 1.1, ease: 'power3.out' });
+  onProgress(tl.time());
+  gsap.to('#hint', { opacity: tl.time() < .5 ? 1 : 0, duration: skipVideo ? 0.01 : 0.8 });
+}
 
 function buildIntro(){
-  const t = gsap.timeline({ onComplete(){
-    document.body.classList.remove('intro'); ScrollTrigger.refresh(); startIdle();
-    onProgress(tl.time()); gsap.to('#hint', { opacity: tl.time() < .5 ? 1 : 0, duration: 1 });
-  }});
-  t.to('#floater', { opacity: 1, y: 0, duration: 1.4, ease: 'power3.out' }, .2)
-   // the hand opens
-   .to('.fb',   { scaleY: 1, rotation: i => OPEN[i], duration: 1.5, ease: 'back.out(1.5)', stagger: .09 }, .7)
-   .to('#th-b', { scaleY: 1, rotation: 36, duration: 1.4, ease: 'back.out(1.6)' }, 1.0)
-   // the phone drops
-   .to('#phone-drop', { y: 0, rotation: 0, duration: 1.05, ease: 'power3.in' }, 2.3)
-   .call(() => { const [x, y] = phoneCenter(); burst(x, y + 120*ps, 60, 6); burst(x, y + 120*ps, 20, 3); }, null, 3.34)
-   .to('#floater', { y: 26, duration: .14, ease: 'power2.out' }, 3.34)
-   .to('#floater', { y: 0, duration: 1.1, ease: 'elastic.out(1,.4)' }, 3.48)
-   .to('#phone-drop', { y: 10, duration: .14, ease: 'power2.out' }, 3.34)
-   .to('#phone-drop', { y: 0, duration: .9, ease: 'elastic.out(1,.35)' }, 3.48)
-   // the fingers close around it
-   .to('.fb, #th-b', { opacity: 0, duration: .3 }, 3.5)
-   .fromTo('.ff',  { opacity: 0, scaleY: .92, rotation: i => OPEN[i] }, { opacity: 1, scaleY: .5, rotation: i => CURL[i], duration: .9, ease: 'power3.out', stagger: .05 }, 3.5)
-   .fromTo('#th-f',{ opacity: 0, scaleY: .92, rotation: 36 }, { opacity: 1, scaleY: .62, rotation: 6, duration: .9, ease: 'power3.out' }, 3.62)
-   // screen wakes
-   .to('.screen-off', { opacity: 0, duration: .8, ease: 'power1.out' }, 4.0)
-   .call(() => { const [x, y] = phoneCenter(); burst(x, y, 24, 2.5); }, null, 4.0)
-   .to('#cap1', { autoAlpha: 1, y: 0, duration: 1.2, ease: 'power3.out' }, 4.2);
-  return t;
+  let done = false;
+  const complete = (skip = false) => {
+    if (done) return;
+    done = true;
+    finishIntro(skip);
+  };
+
+  // Reveal caption as the hand catches the phone (~4.2s into the 7.4s video)
+  gsap.delayedCall(4.2, () => {
+    if (!done) gsap.to('#cap1', { autoAlpha: 1, y: 0, duration: 1.2, ease: 'power3.out' });
+  });
+
+  // Unlock scrolling shortly before or at the end of the video
+  const onTime = () => {
+    if (introVideo.duration && introVideo.currentTime >= introVideo.duration - 0.25){
+      introVideo.removeEventListener('timeupdate', onTime);
+      complete(false);
+    }
+  };
+  introVideo.addEventListener('timeupdate', onTime);
+  introVideo.addEventListener('ended', () => complete(false), { once: true });
+
+  // Allow user wheel/touch to skip straight into scroll if they start scrolling early
+  const earlyScroll = () => complete(true);
+  addEventListener('wheel', earlyScroll, { once: true, passive: true });
+  addEventListener('touchmove', earlyScroll, { once: true, passive: true });
+  addEventListener('keydown', e => {
+    if (['ArrowDown','PageDown',' '].includes(e.key)) complete(true);
+  }, { once: true });
+
+  const playPromise = introVideo.play();
+  if (playPromise && typeof playPromise.catch === 'function'){
+    playPromise.catch(() => complete(true));
+  }
+
+  return { progress(v){ if (v >= 1) complete(true); } };
 }
 
 /* ------------------------------------------------------------------ *
  *  Boot
  * ------------------------------------------------------------------ */
-$('#replay').addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
+$('#replay').addEventListener('click', () => {
+  scrollTo({ top: 0, behavior: 'smooth' });
+  try {
+    if (!introVideo.getAttribute('src')) introVideo.setAttribute('src', 'phone_catch.mp4');
+    introVideo.currentTime = 0;
+    introVideo.play();
+  } catch (_) {}
+});
 addEventListener('resize', () => { sizeCanvas(); });
 
 const ready = Promise.race([
-  Promise.all([ new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = 'Gemini_Generated_Image_dlj23adlj23adlj2.jpeg'; }),
-                document.fonts ? document.fonts.ready : 1 ]),
+  Promise.all([
+    new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = 'Gemini_Generated_Image_dlj23adlj23adlj2.jpeg'; }),
+    new Promise(r => {
+      if (introVideo.readyState >= 2) return r();
+      introVideo.addEventListener('loadeddata', r, { once: true });
+      introVideo.addEventListener('error', r, { once: true });
+    }),
+    document.fonts ? document.fonts.ready : 1
+  ]),
   new Promise(r => setTimeout(r, 2500))
 ]);
 
 ready.then(() => {
-  const intro = buildIntro();
   window.__tl = tl;
   if (params.has('p')){                       // debug: drive the timeline directly (no scrolling)
-    intro.progress(1); tl.scrollTrigger.kill(); const v = parseFloat(params.get('p'));
-    document.body.classList.remove('intro'); tl.time(v); onProgress(v); return;
+    const v = parseFloat(params.get('p'));
+    tl.scrollTrigger.kill();
+    document.body.classList.remove('intro');
+    seekToEnd();
+    tl.time(v);
+    if (v < 0.5) gsap.set('#cap1', { autoAlpha: 1, y: 0 });
+    onProgress(v);
+    return;
   }
+  const intro = buildIntro();
   if (params.has('skip') || params.has('t')){
     intro.progress(1);
     if (params.has('t')){
